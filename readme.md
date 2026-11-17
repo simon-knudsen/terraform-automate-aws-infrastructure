@@ -21,7 +21,6 @@ Infrastructure set up by hand in the AWS console is slow, error-prone and hard t
 - One `terraform apply` goes from an empty account to a live app on a public IP
 - No manual server setup
 - Environment can be destroyed and recreated identically, so it only costs money while in use
-- Free tier eligible
 
 ## What I learned
 
@@ -33,54 +32,65 @@ Infrastructure set up by hand in the AWS console is slow, error-prone and hard t
 ## Screenshots
 
 ![Architecture overview](images/overview.png)
+
 _Architecture: VPC, subnet, route table and security group behind an internet gateway._
 
 <br>
 
 ![Terraform resources created](images/terraform-resources-created.png)
+
 _Terraform creating the VPC and subnet._
 
 <br>
 
 ![VPC](images/vpc.png)
+
 _The VPC in the AWS console._
 
 <br>
 
 ![Subnet](images/subnet.png)
+
 _The subnet inside the VPC._
 
 <br>
 
 ![Internet Gateway](images/internet-gateway.png)
+
 _The internet gateway attached to the VPC._
 
 <br>
 
 ![Route Table](images/route-table.png)
+
 _The route table sending traffic to the internet gateway._
 
 <br>
 
 ![Security Group](images/security-group.png)
+
 _The security group with SSH and port 8080 rules._
 
 <br>
 
 ![Terraform EC2 instance](images/terraform-ec2-instance.png)
+
 _Terraform creating the EC2 instance._
 
 <br>
 
 ![EC2 instance running](images/aws-ec2-instance-created.png)
+
 _The EC2 instance running with all status checks passed._
 
 <br>
 
 ![Docker container running](images/docker-container.png)
+
 _nginx container running on the server, started by the entry script._
 
 <br>
 
 ![nginx reachable on public IP](images/site-public-ip.png)
+
 _The app live on the server's public IP._
