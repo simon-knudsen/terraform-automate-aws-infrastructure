@@ -7,3 +7,6 @@
 
 # tf variable files, may include sensitive data
 *.tfvars
+
+# macOS Finder metadata
+.DS_Store
