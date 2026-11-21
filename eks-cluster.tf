@@ -1,9 +1,9 @@
 module "eks" {
   source  = "terraform-aws-modules/eks/aws"
-  version = "21.1.3"
+  version = "21.30.2"
 
   name = "myapp-eks-cluster"
-  kubernetes_version = "1.33"
+  kubernetes_version = "1.37"
   endpoint_public_access  = true
 
   subnet_ids = module.myapp-vpc.private_subnets
@@ -29,7 +29,7 @@ module "eks" {
 
   eks_managed_node_groups = {
     dev = {
-    instance_types = ["t2.small"]
+    instance_types = ["t3.micro"]
     ami_type       = "AL2023_x86_64_STANDARD"
     min_size       = 1
     max_size       = 3
