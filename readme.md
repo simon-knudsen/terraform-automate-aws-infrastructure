@@ -1,3 +1,13 @@
+## Table of Contents
+
+| # | Project | Description |
+|---|---------|-------------|
+| 1 | [Automate AWS Infrastructure](#automate-aws-infrastructure) | Provision a VPC, subnet, route table, internet gateway, security group and EC2 instance, and deploy a Docker container |
+| 2 | [Modularize Project](#modularize-project) | Divide the Terraform resources into reusable modules |
+| 3 | [Terraform & AWS EKS](#terraform--aws-eks) | Automate provisioning of an EKS cluster |
+
+<br>
+
 # Automate AWS Infrastructure
 
 **Terraform code that builds a complete AWS environment, from network to a running Docker container, with one command.**
@@ -110,3 +120,68 @@ _Module structure: the root module calls the `webserver` and `subnet` modules._
 ![Project structure with modules](images/modules.png)
 
 _Folder structure: each child module lives in its own folder under `modules/`._
+
+<br>
+
+## Terraform & AWS EKS
+
+**Technologies:** Terraform, AWS EKS, Docker, Linux, Git
+
+In this project I used Terraform to automate provisioning of an EKS cluster on AWS. One `terraform apply` creates the network and a Kubernetes cluster with worker nodes ready to run applications. The code is on the [`feature/eks`](../../tree/feature/eks) branch.
+
+- **VPC:** built with the official AWS VPC module, with public and private subnets across all availability zones in `eu-central-1` and a NAT gateway for outbound traffic
+- **EKS cluster:** built with the official AWS EKS module, running Kubernetes 1.37 with a public API endpoint
+- **Worker nodes:** a managed node group of three `t3.micro` instances in the private subnets, one in each availability zone
+- **Add-ons:** CoreDNS, kube-proxy, VPC CNI and EKS Pod Identity Agent
+
+![EKS architecture](images/eks-architecture.png)
+
+_Architecture: Terraform creates the EKS control plane and worker nodes spread across three availability zones in a VPC._
+
+<br>
+
+![Terraform plan](images/eks-terraform-plan.png)
+
+_Terraform plan: 62 resources to add._
+
+<br>
+
+![Terraform apply complete](images/eks-apply-complete.png)
+
+_Terraform apply complete with all 62 resources created._
+
+<br>
+
+![EKS cluster active](images/eks-cluster-active.png)
+
+_The `myapp-eks-cluster` cluster active in the EKS console._
+
+<br>
+
+![EKS nodes](images/eks-nodes.png)
+
+_Three worker nodes in the cluster, all with status Ready._
+
+<br>
+
+![Kubernetes workloads](images/eks-workloads.png)
+
+_System pods running in the cluster, including CoreDNS, kube-proxy and the VPC CNI._
+
+<br>
+
+![EC2 instances](images/eks-ec2-instances.png)
+
+_The worker nodes as EC2 instances, one in each availability zone._
+
+<br>
+
+![VPC created](images/eks-vpc.png)
+
+_The `myapp-vpc` VPC created by Terraform._
+
+<br>
+
+![kubectl get node](images/eks-kubectl-nodes.png)
+
+_`kubectl get node` confirming the three worker nodes are Ready._
