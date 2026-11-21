@@ -29,6 +29,36 @@ Infrastructure set up by hand in the AWS console is slow, error-prone and hard t
 - Data sources keep code portable across regions and releases
 - `user_data` only runs on first boot, so changes require replacing the instance
 
+## Modularized project structure
+
+To make the code reusable and easier to maintain, I split the single `main.tf` into a root module and two child modules. The modular version is on the [`feature/modules`](../../tree/feature/modules) branch.
+
+![Module overview](images/moduels-overview.png)
+
+_The root module calls two child modules: `webserver` and `subnet`._
+
+- **Root module:** creates the VPC, calls the child modules and passes in the values from `terraform.tfvars`
+- **`subnet` module:** subnet, internet gateway and route table
+- **`webserver` module:** security group, AMI lookup, SSH key pair and EC2 instance
+
+Each module has its own `main.tf`, `variables.tf`, `outputs.tf` and `providers.tf`, so it is a self-contained building block with clear inputs and outputs.
+
+![Project structure with modules](images/modules.png)
+
+_Folder structure: each child module lives in its own folder under `modules/`._
+
+**How the modules connect:**
+
+- The root module passes the VPC ID into both modules
+- The `subnet` module outputs the subnet, and the root module passes its ID into the `webserver` module
+- The `webserver` module outputs the instance, and the root module prints its public IP
+
+**Why it matters:**
+
+- The same module can be reused for other environments or servers by changing only the variables
+- Each file has one responsibility, which makes the code easier to read and review
+- Changing the server does not touch the network code, and the reverse
+
 ## Screenshots
 
 ![Architecture overview](images/overview.png)
