@@ -33,19 +33,11 @@ Infrastructure set up by hand in the AWS console is slow, error-prone and hard t
 
 To make the code reusable and easier to maintain, I split the single `main.tf` into a root module and two child modules. The modular version is on the [`feature/modules`](../../tree/feature/modules) branch.
 
-![Module overview](images/moduels-overview.png)
-
-_The root module calls two child modules: `webserver` and `subnet`._
-
 - **Root module:** creates the VPC, calls the child modules and passes in the values from `terraform.tfvars`
 - **`subnet` module:** subnet, internet gateway and route table
 - **`webserver` module:** security group, AMI lookup, SSH key pair and EC2 instance
 
 Each module has its own `main.tf`, `variables.tf`, `outputs.tf` and `providers.tf`, so it is a self-contained building block with clear inputs and outputs.
-
-![Project structure with modules](images/modules.png)
-
-_Folder structure: each child module lives in its own folder under `modules/`._
 
 **How the modules connect:**
 
@@ -124,3 +116,15 @@ _nginx container running on the server, started by the entry script._
 ![nginx reachable on public IP](images/site-public-ip.png)
 
 _The app live on the server's public IP._
+
+<br>
+
+![Module overview](images/moduels-overview.png)
+
+_Module structure: the root module calls the `webserver` and `subnet` modules._
+
+<br>
+
+![Project structure with modules](images/modules.png)
+
+_Folder structure: each child module lives in its own folder under `modules/`._
