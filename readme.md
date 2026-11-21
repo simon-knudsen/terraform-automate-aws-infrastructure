@@ -4,6 +4,17 @@
 
 **Technologies:** Terraform, AWS, Docker, Linux, Git
 
+In this project I used Terraform to automate provisioning of AWS infrastructure and its components:
+
+- VPC
+- Subnet
+- Route table
+- Internet gateway
+- EC2 instance
+- Security group
+
+I also configured a Terraform script to automate deploying a Docker container to the EC2 instance. When the server boots, it installs Docker and starts the container automatically, so no manual server setup is needed.
+
 ![Architecture overview](images/overview.png)
 
 _Architecture: VPC, subnet, route table and security group behind an internet gateway._
@@ -70,7 +81,7 @@ _The app live on the server's public IP._
 
 ## Modularize Project
 
-To make the code reusable and easier to maintain, I split the single `main.tf` into a root module and two child modules. The modular version is on the [`feature/modules`](../../tree/feature/modules) branch.
+In this project I divided the Terraform resources into reusable modules. Instead of keeping everything in a single `main.tf`, the code is split into a root module and two child modules, which makes it easier to reuse, read and maintain. The modular version is on the [`feature/modules`](../../tree/feature/modules) branch.
 
 - **Root module:** creates the VPC, calls the child modules and passes in the values from `terraform.tfvars`
 - **`subnet` module:** subnet, internet gateway and route table
